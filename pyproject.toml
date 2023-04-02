@@ -1,0 +1,13 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "golident"
+version = "0.0.1"
+description = ""
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "scipy",
+]
