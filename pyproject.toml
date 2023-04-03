@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "golident"
-version = "0.0.1"
-description = ""
+version = "0.1.0"
+description = "generate dazzling identicons with Conway's Game of Life"
 dependencies = [
     "numpy",
     "matplotlib",
