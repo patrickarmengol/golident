@@ -59,7 +59,7 @@ def _tile_symmetrically(arr: npt.NDArray[np.int_]):
 
 
 class Golident:
-    def __init__(self, seed_string: str, size: int = 16, iterations: int = 80, num_colors: int = 5):
+    def __init__(self, seed_string: str, size: int = 64, iterations: int = 320, num_colors: int = 5):
         # convert seed_string to hash, then to int seed
         hash_object = hashlib.sha256(seed_string.encode())
         hash_value = int.from_bytes(hash_object.digest(), byteorder='big')
