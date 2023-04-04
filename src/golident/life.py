@@ -59,7 +59,7 @@ def _tile_symmetrically(arr: npt.NDArray[np.int_]):
 
 
 class Golident:
-    def __init__(self, seed_string: str, size: int = 16):
+    def __init__(self, seed_string: str, size: int = 16, iterations: int = 80, num_colors: int = 5):
         # convert seed_string to hash, then to int seed
         hash_object = hashlib.sha256(seed_string.encode())
         hash_value = int.from_bytes(hash_object.digest(), byteorder='big')
@@ -75,13 +75,12 @@ class Golident:
         self.board = rng.choice([True, False], size=(size, size))
 
         # generate random cmap
-        num_colors = 5  # play around with this
         colors = rng.random((num_colors, 3))
         positions = np.linspace(0, 1, num_colors)
         self.cmap = LinearSegmentedColormap.from_list('my_cmap', list(zip(positions, colors)), N=256)
 
         # iterations scale with size
-        self.iterations = size * 5  # play around with this
+        self.iterations = iterations
         # initialize history
         self.history = np.empty((self.iterations + 1, self.board.shape[0], self.board.shape[1]), dtype=np.bool_)
         # initialize identicon array
@@ -147,6 +146,12 @@ class Golident:
         """use matplotlib.pyplot to animate simulation history"""
         _animate_history(self.history, normeach=False, cmap='gray')
 
-    def save_identicon(self, path: Path):
+    def save_identicon(self, path: str):
         """save identicon image to specified path"""
         plt.imsave(path, self.identicon_array, cmap=self.cmap, vmin=0.0, vmax=255.0)
+
+
+if __name__ == '__main__':
+    for i in range(20):
+        g = Golident('zxcv' * i, size=64, iterations=5 * 64)
+        g.show_identicon()
