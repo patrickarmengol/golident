@@ -10,6 +10,7 @@ from scipy.signal import convolve2d
 
 
 def _normalize(arr: npt.NDArray[np.int_]):
+    """normalize values of a numpy array to be between 0 and 255"""
     min_val = arr.min()
     max_val = arr.max()
     # check if the range is zero
@@ -22,6 +23,8 @@ def _normalize(arr: npt.NDArray[np.int_]):
 
 
 def _animate_history(hist: npt.NDArray[np.bool_ | np.int_], normeach: bool, cmap: str | LinearSegmentedColormap):
+    """creates a matplotlib animation to show generation history"""
+
     def animate(i: int):
         plt.clf()
 
@@ -39,10 +42,10 @@ def _animate_history(hist: npt.NDArray[np.bool_ | np.int_], normeach: bool, cmap
         # plt.ylabel('Y')
         plt.axis('off')
 
-    # Create the animation object
+    # create the animation object
     anim = FuncAnimation(plt.gcf(), animate, frames=hist.shape[0], interval=50)
 
-    # Show the animation
+    # show the animation
     plt.show()
 
 
@@ -118,6 +121,7 @@ class Golident:
             self.ihistory[i] = np.where(self.history[i], i, self.ihistory[i - 1] if i > 0 else 0)
 
     def _calc_ident(self):
+        """calculates the identicon array with with normalized grayscale luminosity values"""
         # use the final iteration for the indenticon
         last = self.ihistory[-1]
 
@@ -149,9 +153,3 @@ class Golident:
     def save_identicon(self, path: str):
         """save identicon image to specified path"""
         plt.imsave(path, self.identicon_array, cmap=self.cmap, vmin=0.0, vmax=255.0)
-
-
-if __name__ == '__main__':
-    for i in range(20):
-        g = Golident('zxcv' * i, size=64, iterations=5 * 64)
-        g.show_identicon()
