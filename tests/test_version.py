@@ -2,4 +2,4 @@ from golident import __version__
 
 
 def test_version():
-    __version__
+    assert __version__ is not None
