@@ -1,7 +1,6 @@
 __version__ = "0.1.1"
 
 import hashlib
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -66,7 +65,6 @@ def _tile_symmetrically(arr: npt.NDArray[np.int_]):
             np.concatenate(
                 (np.flip(np.flip(arr, axis=1), axis=0), np.flip(arr, axis=0)), axis=1
             ),
-            # np.concatenate((np.flip(norm, axis=0), np.flip(np.flip(norm, axis=0), axis=1)), axis=1),
         ),
         axis=0,
     )
@@ -143,13 +141,14 @@ class Golident:
         # 3d integer nparray that tracks last index along axis 0 where true
         self.ihistory = np.zeros_like(self.history, dtype=int)
         for i in range(self.history.shape[0]):
-            # for each slice along axis 0, if cell value is True, use index, else, take previous or 0
+            # for each slice along axis 0, if cell value is True, use index
+            # else, take previous or 0
             self.ihistory[i] = np.where(
                 self.history[i], i, self.ihistory[i - 1] if i > 0 else 0
             )
 
     def _calc_ident(self):
-        """calculates the identicon array with with normalized grayscale luminosity values"""
+        """calculates the identicon array with with normalized grayscale luminosity"""
         # use the final iteration for the indenticon
         last = self.ihistory[-1]
 
@@ -171,7 +170,7 @@ class Golident:
         _animate_history(self.ihistory, normeach=True, cmap=self.cmap)
 
     def show_alt_history(self):
-        """use matplotlib.pyplot to animate identicon color history in a different way"""
+        """use matplotlib.pyplot to animate identicon color history differently"""
         _animate_history(_normalize(self.ihistory), normeach=False, cmap=self.cmap)
 
     def show_sim(self):
