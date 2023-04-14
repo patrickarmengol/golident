@@ -1,4 +1,4 @@
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 import hashlib
 
@@ -27,7 +27,7 @@ def _animate_history(
     hist: npt.NDArray[np.bool_ | np.int_],
     normeach: bool,
     cmap: str | LinearSegmentedColormap,
-):
+) -> FuncAnimation:
     """creates a matplotlib animation to show generation history"""
 
     def animate(i: int):
@@ -52,9 +52,7 @@ def _animate_history(
 
     # create the animation object
     anim = FuncAnimation(plt.gcf(), animate, frames=hist.shape[0], interval=50)
-
-    # show the animation
-    plt.show()
+    return anim
 
 
 def _tile_symmetrically(arr: npt.NDArray[np.int_]):
@@ -165,18 +163,37 @@ class Golident:
         plt.imshow(self.identicon_array, cmap=self.cmap, vmin=0.0, vmax=255.0)
         plt.show()
 
+    def save_identicon(self, path: str):
+        """save identicon image to specified path"""
+        plt.axis("off")
+        plt.imsave(path, self.identicon_array, cmap=self.cmap, vmin=0.0, vmax=255.0)
+
     def show_history(self):
         """use matplotlib.pyplot to animate identicon color history"""
         _animate_history(self.ihistory, normeach=True, cmap=self.cmap)
+        plt.show()
+
+    def save_history(self, path: str):
+        """use matplotlib.pyplot to save animation of color history"""
+        anim = _animate_history(self.ihistory, normeach=True, cmap=self.cmap)
+        anim.save(path)
 
     def show_alt_history(self):
         """use matplotlib.pyplot to animate identicon color history differently"""
         _animate_history(_normalize(self.ihistory), normeach=False, cmap=self.cmap)
 
+    def save_alt_history(self, path: str):
+        """use matplotlib.pyplot to save animation of color history differently"""
+        anim = _animate_history(
+            _normalize(self.ihistory), normeach=True, cmap=self.cmap
+        )
+        anim.save(path)
+
     def show_sim(self):
         """use matplotlib.pyplot to animate simulation history"""
         _animate_history(self.history, normeach=False, cmap="gray")
 
-    def save_identicon(self, path: str):
-        """save identicon image to specified path"""
-        plt.imsave(path, self.identicon_array, cmap=self.cmap, vmin=0.0, vmax=255.0)
+    def save_sim(self, path: str):
+        """use matplotlib.pyplot to save animation of simulation history"""
+        anim = _animate_history(self.ihistory, normeach=True, cmap=self.cmap)
+        anim.save(path)
