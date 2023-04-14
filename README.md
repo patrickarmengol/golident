@@ -1,6 +1,6 @@
 # golident
 
-*golident* generates dazzling, randomly-generated identicons with Conway's Game of Life visualizations. 
+_golident_ generates dazzling, randomly-generated identicons with Conway's Game of Life visualizations.
 
 ---
 
@@ -19,7 +19,7 @@ pip install golident
 ## Usage
 
 ```python
-g = Golident('asdfqwer', size=64, iterations=320, num_colors=5)
+g = Golident('asdfqwer', size=128, iterations=320, num_colors=5)
 g.show_identicon()
 g.show_history()
 g.save_identicon('asdfqwer.png')

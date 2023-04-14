@@ -72,10 +72,15 @@ class Golident:
     def __init__(
         self,
         seed_string: str,
-        size: int = 64,
-        iterations: int = 320,
+        size: int = 128,
+        iterations: int = 320,  # maybe 2.5x size
         num_colors: int = 5,
     ):
+        # validate size
+        if size % 2 != 0 or size < 2:
+            raise ValueError("size must be even and >= 2")
+        half = size // 2
+
         # convert seed_string to hash, then to int seed
         hash_object = hashlib.sha256(seed_string.encode())
         hash_value = int.from_bytes(hash_object.digest(), byteorder="big")
@@ -88,7 +93,7 @@ class Golident:
         rng = np.random.default_rng(hash_value)
 
         # generate random board
-        self.board = rng.choice([True, False], size=(size, size))
+        self.board = rng.choice([True, False], size=(half, half))
 
         # generate random cmap
         colors = rng.random((num_colors, 3))
@@ -104,8 +109,6 @@ class Golident:
             (self.iterations + 1, self.board.shape[0], self.board.shape[1]),
             dtype=np.bool_,
         )
-        # initialize identicon array
-        self.identicon_array = np.empty((size, size))
         # run simulation to populate history
         self._run(self.iterations)
         # calculate new ident_array
