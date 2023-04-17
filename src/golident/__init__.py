@@ -1,4 +1,4 @@
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 import hashlib
 
@@ -8,6 +8,7 @@ import numpy.typing as npt
 from matplotlib.animation import FuncAnimation
 from matplotlib.colors import LinearSegmentedColormap
 from scipy.signal import convolve2d
+import matplotlib.image as mpimg
 
 
 def _normalize(arr: npt.NDArray[np.int_]):
@@ -68,6 +69,11 @@ def _tile_symmetrically(arr: npt.NDArray[np.int_]):
     )
 
 
+def _upscale(arr: npt.NDArray[np.int_], scale: int):
+    """upscale an image by repeating; kind of like nn interpolation"""
+    return np.repeat(np.repeat(arr, scale, axis=0), scale, axis=1)
+
+
 class Golident:
     def __init__(
         self,
@@ -80,6 +86,7 @@ class Golident:
         if size % 2 != 0 or size < 2:
             raise ValueError("size must be even and >= 2")
         half = size // 2
+        self.size = size
 
         # convert seed_string to hash, then to int seed
         hash_object = hashlib.sha256(seed_string.encode())
@@ -160,16 +167,16 @@ class Golident:
         tiled = _tile_symmetrically(norm)
         self.identicon_array = tiled
 
-    def show_identicon(self):
+    def show_identicon(self, scale: int = 1):
         """use matplotlib.pyplot to draw identicon"""
         plt.axis("off")
-        plt.imshow(self.identicon_array, cmap=self.cmap, vmin=0.0, vmax=255.0)
+        plt.title("")
+        plt.imshow(_upscale(self.identicon_array, scale), cmap=self.cmap)
         plt.show()
 
-    def save_identicon(self, path: str):
+    def save_identicon(self, path: str, scale: int = 1):
         """save identicon image to specified path"""
-        plt.axis("off")
-        plt.imsave(path, self.identicon_array, cmap=self.cmap, vmin=0.0, vmax=255.0)
+        mpimg.imsave(path, _upscale(self.identicon_array, scale), cmap=self.cmap)
 
     def show_history(self):
         """use matplotlib.pyplot to animate identicon color history"""

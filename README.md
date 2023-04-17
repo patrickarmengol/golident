@@ -22,8 +22,10 @@ pip install golident
 g = Golident('asdfqwer', size=128, iterations=320, num_colors=5)
 g.show_identicon()
 g.show_history()
-g.save_identicon('asdfqwer.png')
+g.save_identicon('asdfqwer_128.png', scale=2)
 ```
+
+![asdfqwer_128.png](img/asdfqwer_128.png)
 
 ## License
 
