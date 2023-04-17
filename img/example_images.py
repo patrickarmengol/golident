@@ -14,7 +14,7 @@ from golident import Golident
 
 
 for i in range(1, 11):
-    seed = "p" * i
+    seed = "q" * i
     g = Golident(seed, size=128, iterations=320, num_colors=5)
     # g.show_identicon()
     g.save_identicon(f"img/{i:02d}.png")
