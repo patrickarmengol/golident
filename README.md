@@ -2,7 +2,7 @@
 
 _golident_ generates dazzling, randomly-generated identicons with Conway's Game of Life visualizations.
 
-![01.png](img/01.png) ![02.png](img/02.png) ![03.png](img/03.png) ![04.png](img/04.png) ![05.png](img/05.png) ![06.png](img/06.png)
+![07.png](img/07.png) ![08.png](img/08.png) ![09.png](img/09.png) ![10.png](img/10.png) ![05.png](img/05.png) ![06.png](img/06.png)
 
 ---
 
